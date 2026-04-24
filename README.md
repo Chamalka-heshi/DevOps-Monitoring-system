@@ -93,20 +93,3 @@ devops-dashboard/
     ├── .env                      Secrets (not committed)
     └── package.json
 ```
-
----
-
-## Bugs fixed from original code
-
-| # | Bug | Fix |
-|---|-----|-----|
-| 1 | `console.log("Token:", token)` before imports — parse error | Removed |
-| 2 | JWT signed with `"your_jwt_secret_here"` but verified with `"your_jwt_secret"` | Both now read `process.env.JWT_SECRET` |
-| 3 | Two entry points: `server.js` and `index.js` both binding port 5000 | Deleted `index.js`, single `server.js` |
-| 4 | `if (!token) return <Login />` before `useEffect` — React hooks rule violation | Guard moved inside `useEffect`, return moved after all hooks |
-| 5 | `authMiddleware` applied twice (router level + per-route) | Applied once, in `systemRoutes.js` only |
-| 6 | No error state — backend unreachable = forever "Loading…" | Error state + meaningful messages |
-| 7 | Hardcoded secrets in source code | All secrets in `.env` via dotenv |
-| 8 | Wildcard CORS `cors()` | Scoped to `CLIENT_ORIGIN` env var |
-| 9 | No rate limiting on auth routes | `express-rate-limit`: 10 req/15 min |
-| 10 | Hardcoded MongoDB URI | Reads `process.env.MONGO_URI` |
